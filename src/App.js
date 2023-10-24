@@ -1,23 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
-
+import { useEffect, useState } from 'react';
+import ProfileCard from './ProfileCard';
 function App() {
+
+const [users, setUsers] = useState([]);
+
+const url = "https://api.github.com/users";
+
+  const loadData =  async() => {
+    // console.log("pandu");
+    const response = await fetch(url);
+    const data = await response.json();
+    console.log(data);
+    setUsers(data);
+} 
+
+ useEffect(()=>{
+  loadData();
+ },[]) 
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {/* <h1>panduMySon</h1> */}
+      {users.map((user) => {
+        return (
+        <ProfileCard name={user.login} image={user.avatar_url}/>
+        )
+      }
+      )}
+      {/* <ProfileCard/> */}
+      {/* {console.log("Noids")} */}
+      {/* {loadData()} */}
     </div>
   );
 }
